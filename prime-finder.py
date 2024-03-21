@@ -1,3 +1,31 @@
+from random import sample
+import timeit
+
+
+# Function to find the prime numbers in a given limit and return 2 random prime numbers
+def SieveOfEratosthenes(limit):
+    prime = [True for i in range(limit + 1)]
+    p = 2
+    while p * p <= limit:
+        # If prime[p] is not changed, then it is a prime
+        if prime[p] == True:
+
+            # Updating all multiples of p
+            for i in range(p * p, limit + 1, p):
+                prime[i] = False
+        p += 1
+
+    # Append all primes in the limit
+    primes = []
+    for p in range(2, limit + 1):
+        if prime[p]:
+            primes.append(p)
+
+    # Return 2 random primes from the list
+    return sample(primes, 2)
+
+
+# Function to find the prime factors of a number
 def get_prime_factors(n):
     # Get a g that is less than n
     for g in range(2, n):
@@ -40,6 +68,26 @@ def get_prime_factors(n):
         return f1, f2
 
 
-print(get_prime_factors(77))  # (7, 11)
-print(get_prime_factors(143))  # (11, 13)
-print(get_prime_factors(221))  # (13, 17)
+# Function to run a single test
+def run_test(silent=False, prime_limit=1000):
+    start = timeit.default_timer()
+    p1, p2 = SieveOfEratosthenes(prime_limit)
+    n = p1 * p2
+    f1, f2 = get_prime_factors(n)
+    if not silent:
+        print("==================================================================")
+        print(f"n = {n}")
+        print(f"\tFactores originales: {p1} y {p2}\n\t{p1} * {p2} = {p1 * p2}")
+        print(f"\n\tFactores encontrados: {f1} y {f2}\n\t{f1} * {f2} = {f1 * f2}")
+    elapsed_time = timeit.default_timer() - start
+    print(f"Elapsed time: {elapsed_time} seconds") if not silent else None
+    return elapsed_time
+
+
+tests = 5
+total_elapsed_time = 0
+prime_limit = 1000
+for _ in range(tests):
+    total_elapsed_time += run_test(silent=True, prime_limit=prime_limit)
+
+print(f"Average elapsed time: {total_elapsed_time / tests} seconds")
