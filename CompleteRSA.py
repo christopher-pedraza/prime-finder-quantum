@@ -98,7 +98,9 @@ if __name__ == "__main__":
     rsa_keys = ()
     primes = SieveOfEratosthenes(1000, 5000)
     while not rsa_keys:
-        p1, p2 = sample(primes, 2)
+        # Select 2 random prime numbers
+        # p1, p2 = sample(primes, 2)
+        p1, p2 = 11, 13
         print(f"Generating RSA Keys with the prime numbers: {p1}, {p2}", end=" ... ")
 
         n = p1 * p2
@@ -110,7 +112,7 @@ if __name__ == "__main__":
 
     print("n =", n)
     print("Public Key:", rsa_keys[0][0])
-    print("Private Key:", rsa_keys[1][1])
+    print("Private Key:", rsa_keys[1][0])
 
 
     while True:
